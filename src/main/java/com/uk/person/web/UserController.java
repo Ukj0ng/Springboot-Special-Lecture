@@ -2,9 +2,13 @@ package com.uk.person.web;
 
 import com.uk.person.domain.User.User;
 import com.uk.person.domain.User.UserRepository;
+import com.uk.person.domain.dto.CommonDto;
+import com.uk.person.domain.dto.JoinReqDto;
+import com.uk.person.domain.dto.UpdateReqDto;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-// @RequiredArgsConstructor
 // RestController는 servletContext가 띄움
 @RestController
 public class UserController {
@@ -31,17 +34,17 @@ public class UserController {
 
     // http://localhost:8080/user
     @GetMapping("/user")
-    public List<User> findAll() {
+    public CommonDto<List<User>> findAll() {
         System.out.println("UserController.findAll");
-        return userRepository.findAll();    // MessageConverter가 동작하도록 필터가 짜여있음 => JavaObject -> Json String으로 응답해줌
+        return new CommonDto<>(HttpStatus.OK.value(), userRepository.findAll());    // MessageConverter가 동작하도록 필터가 짜여있음 => JavaObject -> Json String으로 응답해줌
         // 레거시는 MessageConverter를 설정해줘야 하지만 Spring boot는 자동으로 해줌
     }
 
     // http://localhost:8080/user/1
     @GetMapping("/user/{id}")
-    public User findById(@PathVariable int id) {    // @PathVariable는 url에 있는 변수값을 받아줌
+    public CommonDto<User> findById(@PathVariable int id) {    // @PathVariable는 url에 있는 변수값을 받아줌
         System.out.println("UserController.findById: " + id);
-        return userRepository.findById(id);
+        return new CommonDto<>(HttpStatus.OK.value(), userRepository.findById(id));
     }
 
     // http://localhost:8080/user
@@ -50,26 +53,31 @@ public class UserController {
     // x-www-form-urlencoded => request.getParameter()
     // queryString은 x-www-form-urlencoded이 타입
     // text/plain, application/json => @RequestBody 어노테이션을 사용
-    public String save(@RequestBody User user) {
+    // ResponseEntity: 따로 Dto쓰지말고 ResponseEntity를 쓰라고 만들어놓음
+    public CommonDto<String> save(@RequestBody JoinReqDto dto) {
         System.out.println("UserController.save");
-        System.out.println(user);
-        userRepository.save(user);
+        System.out.println(dto);
+        userRepository.save(dto);
 //        System.out.println("username: " + username);
 //        System.out.println("password: " + password);
 //        System.out.println("phone: " + phone);
 
-        return "Saved";
+        return new CommonDto<>(HttpStatus.OK.value(), "ok");
     }
 
     // http://localhost:8080/user/1
     @DeleteMapping("/user/{id}")
-    public void delete(@PathVariable int id) {
+    public CommonDto delete(@PathVariable int id) {
         System.out.println("UserController.delete");
+        userRepository.delete(id);  // 만약 userRepository의 함수에서 에러가 발생하면 exception 발생, 굳이 확인 안해도 됨
+        return new CommonDto<>(HttpStatus.OK.value());
     }
 
     // http://localhost:8080/user/1
     @PutMapping("/user/{id}")
-    public void update(@PathVariable int id, String password, String phone) {
+    public CommonDto update(@PathVariable int id, UpdateReqDto dto) {
         System.out.println("UserController.update");
+        userRepository.update(id, dto);
+        return new CommonDto<>(HttpStatus.OK.value());
     }
 }
