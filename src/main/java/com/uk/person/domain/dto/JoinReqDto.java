@@ -1,2 +1,10 @@
-package com.uk.person.domain.dto;public class JoinReqDto {
+package com.uk.person.domain.dto;
+
+import lombok.Data;
+
+@Data
+public class JoinReqDto {
+    private String username;
+    private String password;
+    private String phone;
 }
