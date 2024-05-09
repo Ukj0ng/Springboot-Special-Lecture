@@ -1,5 +1,7 @@
 package com.uk.person.domain.User;
 
+import com.uk.person.domain.dto.JoinReqDto;
+import com.uk.person.domain.dto.UpdateReqDto;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Repository;
@@ -22,7 +24,15 @@ public class UserRepository {
         return new User(1, "ssar", "1234", "010111111111");
     }
 
-    public void save(User user) {
+    public void save(JoinReqDto dto) {
         System.out.println("DB에 insert하기");
+    }
+
+    public void delete(int id) {
+        System.out.println("DB에 delete하기");
+    }
+
+    public void update(int id, UpdateReqDto dto) {
+        System.out.println("DB에 update하기");
     }
 }
