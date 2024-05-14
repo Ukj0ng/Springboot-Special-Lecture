@@ -1,0 +1,5 @@
+[2024-05-14 19:09:08:8980][http-nio-8080-exec-2] WARN  com.uk.person.config.BindingAdvice - UserController.save() => 필드: username, 메세지: username 길이를 초과하였습니다.
+[2024-05-14 19:13:34:83735][http-nio-8080-exec-3] WARN  com.uk.person.config.BindingAdvice - UserController.save() => 필드: username, 메세지: username 길이를 초과하였습니다.
+[2024-05-14 19:33:41:8298][http-nio-8080-exec-2] WARN  com.uk.person.config.BindingAdvice - UserController.save() => 필드: username, 메세지: username 길이를 초과하였습니다.
+[2024-05-14 19:34:18:45931][http-nio-8080-exec-3] WARN  com.uk.person.config.BindingAdvice - UserController.update() => 필드: password, 메세지: password를 입력하세요
+[2024-05-14 19:34:41:68635][http-nio-8080-exec-4] WARN  com.uk.person.config.BindingAdvice - UserController.save() => 필드: username, 메세지: username 길이를 초과하였습니다.
