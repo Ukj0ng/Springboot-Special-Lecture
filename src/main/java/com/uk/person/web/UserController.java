@@ -5,10 +5,15 @@ import com.uk.person.domain.User.UserRepository;
 import com.uk.person.domain.dto.CommonDto;
 import com.uk.person.domain.dto.JoinReqDto;
 import com.uk.person.domain.dto.UpdateReqDto;
+import jakarta.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +59,7 @@ public class UserController {
     // queryString은 x-www-form-urlencoded이 타입
     // text/plain, application/json => @RequestBody 어노테이션을 사용
     // ResponseEntity: 따로 Dto쓰지말고 ResponseEntity를 쓰라고 만들어놓음
-    public CommonDto<String> save(@RequestBody JoinReqDto dto) {
+    public CommonDto<?> save(@Valid @RequestBody JoinReqDto dto, BindingResult bindingResult) {
         System.out.println("UserController.save");
         System.out.println(dto);
         userRepository.save(dto);
@@ -75,7 +80,7 @@ public class UserController {
 
     // http://localhost:8080/user/1
     @PutMapping("/user/{id}")
-    public CommonDto update(@PathVariable int id, UpdateReqDto dto) {
+    public CommonDto<?> update(@PathVariable int id, @Valid @RequestBody UpdateReqDto dto, BindingResult bindingResult) {
         System.out.println("UserController.update");
         userRepository.update(id, dto);
         return new CommonDto<>(HttpStatus.OK.value());
