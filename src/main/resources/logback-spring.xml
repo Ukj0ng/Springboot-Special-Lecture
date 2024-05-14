@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <property name="LOGS_ABSOLUTE_PATH" value="./logs" />
+
+<!--  STDOUT는 console이고 FILE은 file에 남기는거 -->
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{36} - %msg%n</Pattern>
+    </layout>
+  </appender>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOGS_ABSOLUTE_PATH}/logback.log</file>
+    <encoder>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOGS_ABSOLUTE_PATH}/logback.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>5MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+<!--  root가 INFO이면 INFO, WARN, ERROR를 모두 콘솔에 띄우겠다-->
+  <root level="DEBUG">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+<!--  아래 name은 log를 만드는 장소로 설정, WARN은 WARN + ERROR를 띄우겠다는 의미-->
+  <logger name="com.uk.person.config" level="WARN">
+    <appender-ref ref="FILE" />
+  </logger>
+
+</configuration>
